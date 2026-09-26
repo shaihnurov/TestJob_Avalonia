@@ -1,0 +1,51 @@
+﻿using System;
+using TestJob_Avalonia.Models.Dto;
+
+namespace TestJob_Avalonia.Services.Auth;
+
+/// <summary>
+/// Хранит текущее состояние авторизации пользователя в рамках сессии приложения
+/// </summary>
+public interface IAuthStateService
+{
+    /// <summary>
+    /// Текущий access токен для авторизации запросов, либо null, если пользователь не авторизован
+    /// </summary>
+    string? AccessToken { get; }
+
+    /// <summary>
+    /// Текущий refresh токен, полученный при логине
+    /// </summary>
+    string? RefreshToken { get; }
+
+    /// <summary>
+    /// Данные текущего авторизованного пользователя, либо null
+    /// </summary>
+    UserDto? CurrentUser { get; }
+
+    /// <summary>
+    /// true, если пользователь авторизован (есть и токен, и данные пользователя)
+    /// </summary>
+    bool IsAuthenticated { get; }
+
+    /// <summary>
+    /// Вызывается при любом изменении состояния авторизации (вход, выход, обновление профиля)
+    /// </summary>
+    event Action? StateChanged;
+
+    /// <summary>
+    /// Устанавливает состояние авторизованной сессии на основе результата успешного логина
+    /// </summary>
+    /// <param name="authResult">Ответ эндпоинта /login (токены+данные пользователя)</param>
+    void SetSession(AuthResultDto authResult);
+
+    /// <summary>
+    /// Обновляет данные текущего пользователя без изменения токенов (после GET /api/auth/me)
+    /// </summary>
+    void SetCurrentUser(UserDto user);
+
+    /// <summary>
+    /// Сбрасывает состояние авторизации /logout
+    /// </summary>
+    void Clear();
+}
