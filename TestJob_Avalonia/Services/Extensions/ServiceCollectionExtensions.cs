@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestJob_Avalonia.Services.Auth;
+using TestJob_Avalonia.Services.Auth.API;
 using TestJob_Avalonia.Services.Http;
 using TestJob_Avalonia.Services.Navigations;
 using TestJob_Avalonia.ViewModels;
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSingletonServices(this IServiceCollection services)
     {
         services.AddViewModel<MainWindowViewModel>(ServiceLifetime.Singleton);
+        services.AddViewModel<AuthViewModel>(ServiceLifetime.Singleton);
 
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IAuthStateService, AuthStateService>();
@@ -31,7 +33,10 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddTransientServices(this IServiceCollection services)
     {
-        
+        services.AddViewModel<UserInfoViewModel>(ServiceLifetime.Transient);
+        services.AddViewModel<DevInfoViewModel>(ServiceLifetime.Transient);
+
+        services.AddTransient<IAuthApiService, AuthApiService>();
 
         return services;
     }
