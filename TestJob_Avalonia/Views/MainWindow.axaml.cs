@@ -1,12 +1,8 @@
 using Avalonia.Controls;
 
-namespace TestJob_Avalonia.Views
+namespace TestJob_Avalonia.Views;
+
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+    public MainWindow() => InitializeComponent();
 }

@@ -1,7 +1,13 @@
-﻿namespace TestJob_Avalonia.ViewModels
+﻿using System.Threading.Tasks;
+
+namespace TestJob_Avalonia.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
 {
-    public partial class MainWindowViewModel : ViewModelBase
+    public string Greeting { get; } = "Welcome to Avalonia!";
+
+    public override async Task Initialize()
     {
-        public string Greeting { get; } = "Welcome to Avalonia!";
+        await base.Initialize();
     }
 }
