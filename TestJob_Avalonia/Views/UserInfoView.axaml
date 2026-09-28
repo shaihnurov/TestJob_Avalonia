@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:vm="using:TestJob_Avalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="TestJob_Avalonia.Views.UserInfoView"
@@ -28,10 +29,16 @@
                     </Style>
                 </Grid.Styles>
 
-                <controls:Avatar Grid.Row="1" Grid.RowSpan="4" Width="166" Height="166"
-                                 Margin="0,0,16,0" VerticalAlignment="Center" Fallback="Нет фото"
-                                 Source="{Binding User.Avatar}"
-                                 CornerRadius="{DynamicResource XlCornerRadius}" />
+               <Border Grid.Row="1" Grid.RowSpan="4" Width="166" Height="166" Margin="0,0,16,0"
+                       VerticalAlignment="Center" ClipToBounds="True"
+                       CornerRadius="{DynamicResource XlCornerRadius}"
+                       BorderBrush="{DynamicResource BorderColor30}" BorderThickness="1">
+                   <Panel>
+                       <TextBlock Classes="Muted" Text="Нет фото" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  IsVisible="{Binding User.Avatar, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                       <Image asyncImageLoader:ImageLoader.Source="{Binding User.Avatar}" Stretch="UniformToFill" />
+                   </Panel>
+               </Border>
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Classes="LucideIcon" Text="&#xe1f3;" />
                 <TextBlock Grid.Row="1" Grid.Column="2" Classes="Small" Text="Id" />
