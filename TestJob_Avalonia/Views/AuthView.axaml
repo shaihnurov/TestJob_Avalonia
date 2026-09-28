@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="using:TestJob_Avalonia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TestJob_Avalonia.Views.AuthView"
+             x:DataType="vm:AuthViewModel">
+
+    <controls:Card HorizontalAlignment="Center" VerticalAlignment="Stretch">
+        <controls:Card.Header>
+            <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Classes="LucideIcon" Grid.Column="0" Margin="10 0"
+                           Text="&#57580;" FontSize="20" Height="20" Width="20" />
+                <WrapPanel Orientation="Vertical" Grid.Column="1">
+                    <controls:CardTitle FontSize="15" Content="Авторизация"/>
+                    <controls:CardDescription Content="Пожалуйста, войдите в свой аккаунт"
+                                              FontSize="12"/>
+                </WrapPanel>
+            </Grid>
+        </controls:Card.Header>
+
+        <StackPanel>
+            <StackPanel Spacing="5" IsVisible="{Binding !IsAuthenticated, Mode=OneWay}">
+                <TextBox Classes="Clearable" controls:ControlAssist.Label="Почта"
+                        controls:ElementAssist.FocusOnLoad="True"
+                        PlaceholderText="user@example.com"
+                        Text="{Binding Email, Mode=TwoWay}" />
+                <TextBox Classes="PasswordReveal" controls:ControlAssist.Label="Пароль"
+                        PasswordChar="•" PlaceholderText="Введите пароль"
+                        Text="{Binding Password, Mode=TwoWay}" />
+
+                <Button Classes="Primary" Content="Sign in" Margin="0 10"
+                        Command="{Binding AuthCommand}"
+                        controls:ButtonAssist.ShowProgress="{Binding IsBusy, Mode=OneWay}">
+                    <controls:ButtonAssist.Icon>
+                        <TextBlock Classes="LucideIcon" Text="&#xe111;" />
+                    </controls:ButtonAssist.Icon>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Spacing="8" IsVisible="{Binding IsAuthenticated}">
+                <TextBlock Text="Вы авторизованы" />
+                <Button Classes="Secondary" Content="Выйти" Command="{Binding LogoutCommand}" />
+            </StackPanel>
+        </StackPanel>
+
+        <controls:Card.Footer>
+            <Button Classes="Primary" Content="Sign up" HorizontalAlignment="Center"
+                    Command="{Binding, OpenRegisterCommand}" IsVisible="{Binding !IsAuthenticated}"
+                    controls:ButtonAssist.ShowProgress="{Binding IsBusy, Mode=OneWay}">
+                <controls:ButtonAssist.Icon>
+                    <TextBlock Classes="LucideIcon" Text="&#xe111;" />
+                </controls:ButtonAssist.Icon>
+            </Button>
+        </controls:Card.Footer>
+    </controls:Card>
+</UserControl>

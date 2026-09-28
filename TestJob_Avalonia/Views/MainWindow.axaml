@@ -1,20 +1,64 @@
-<Window xmlns="https://github.com/avaloniaui"
+<controls:Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:TestJob_Avalonia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+        xmlns:converters="using:TestJob_Avalonia.Converters"
+        xmlns:views="using:TestJob_Avalonia.Views"
+        xmlns:vm="using:TestJob_Avalonia.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
         x:Class="TestJob_Avalonia.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="TestJob_Avalonia">
+        Title="TestJob_Avalonia"
+        MinWidth="1000" MinHeight="700"
+        SaveWindowState="True"
+        TitleFontWeight="SemiBold"
+        WindowStartupLocation="CenterScreen">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    <controls:Window.Hosts>
+        <controls:DialogHost Manager="{Binding DialogManager, Mode=OneWay}"/>
+    </controls:Window.Hosts>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <controls:Window.RightWindowTitleBarContent>
+        <Button Background="{DynamicResource SidebarBackgroundColor}"
+            Command="{Binding SwitchThemeCommand}"
+            CornerRadius="{DynamicResource MdCornerRadius}"
+            Height="30" Width="30" ToolTip.Tip="Сменить тему">
+            <TextBlock Classes="LucideIcon" Text="{Binding CurrentTheme, Converter={x:Static converters:ThemeModeConverters.ToLucideIcon}}" />
+        </Button>
+    </controls:Window.RightWindowTitleBarContent>
 
-</Window>
+    <Grid>
+        <Panel>
+            <DockPanel>
+                <Border DockPanel.Dock="Top" HorizontalAlignment="Center" Padding="0 16 0 16" 
+                        BorderBrush="{DynamicResource BorderColor30}" BorderThickness="0 0 0 1">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Classes="Primary" Command="{Binding RedirectionUserInfoCommand}" 
+                            Content="Личная информация">
+                            <controls:ButtonAssist.Icon>
+                                <TextBlock Classes="LucideIcon" Margin="0,0,6,0" Text="&#xe57d;" />
+                            </controls:ButtonAssist.Icon>
+                        </Button>
+
+                        <Button Classes="Primary" Command="{Binding RedirectionDevInfoCommand}" 
+                            Content="Информация о разработчике">
+                            <controls:ButtonAssist.Icon>
+                                <TextBlock Classes="LucideIcon" Margin="0,0,6,0" Text="&#xe36e;" />
+                            </controls:ButtonAssist.Icon>
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto" Margin="10" ColumnSpacing="10">
+                    <ScrollViewer Grid.Column="0">
+                        <TransitioningContentControl Content="{Binding CurrentPage, Mode=OneWay}"/>
+                    </ScrollViewer>
+                    <views:AuthView Grid.Column="1" DataContext="{Binding AuthViewModel}" />
+                </Grid>
+            </DockPanel>
+
+            <controls:ToastHost ZIndex="99" Manager="{Binding ToastManager, Mode=OneWay}" />
+        </Panel>
+    </Grid>
+</controls:Window>

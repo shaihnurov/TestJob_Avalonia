@@ -1,0 +1,36 @@
+﻿<UserControl
+    mc:Ignorable="d"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:vm="using:TestJob_Avalonia.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="TestJob_Avalonia.Views.RegisterView"
+    x:DataType="vm:RegisterViewModel">
+
+    <StackPanel Margin="24" Spacing="5" Width="275">
+        <TextBlock Classes="h4" Text="Регистрация" />
+
+        <TextBox Classes="Clearable" Text="{Binding Email, Mode=TwoWay}"
+            PlaceholderText="user@example.com"
+            controls:ControlAssist.Label="Email"
+            controls:ElementAssist.FocusOnLoad="True" />
+
+        <TextBox Classes="Clearable" Text="{Binding Name, Mode=TwoWay}"
+            PlaceholderText="Jonh"
+            controls:ControlAssist.Label="Ваше имя"
+            controls:ElementAssist.FocusOnLoad="True" />
+
+        <TextBox Classes="PasswordReveal" PasswordChar="•" 
+            Text="{Binding Password, Mode=TwoWay}"
+            PlaceholderText="Введите пароль"
+            controls:ControlAssist.Label="Пароль" />
+
+        <StackPanel Margin="0,24,0,0" Spacing="5">
+            <Button Classes="Primary" Command="{Binding SubmitCommand}"
+                    controls:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                    HotKey="Enter" Content="Зарегистрироваться"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

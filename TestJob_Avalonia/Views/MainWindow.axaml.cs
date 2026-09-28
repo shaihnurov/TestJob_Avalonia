@@ -1,8 +1,6 @@
-using Avalonia.Controls;
-
 namespace TestJob_Avalonia.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ShadUI.Window
 {
     public MainWindow() => InitializeComponent();
 }

@@ -1,15 +1,23 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
              x:Class="TestJob_Avalonia.App"
-             xmlns:local="using:TestJob_Avalonia"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             xmlns:local="using:TestJob_Avalonia">
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
   
+    <Application.Resources>
+        <FontFamily x:Key="LucideIcon">avares://TestJob_Avalonia/Assets/Fonts#lucide</FontFamily>
+        <FontFamily x:Key="ManropeFont">avares://TestJob_Avalonia/Assets/Fonts#Manrope</FontFamily>
+        <FontFamily x:Key="ShadUIIcon">avares://TestJob_Avalonia/Assets/Fonts#shadui</FontFamily>
+        <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+        <shadui:ShadTheme />
+
+        <StyleInclude Source="avares://TestJob_Avalonia/Styles/Index.axaml" />
     </Application.Styles>
 </Application>

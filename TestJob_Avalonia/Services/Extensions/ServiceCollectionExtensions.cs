@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.Design;
+﻿using System;
+using Avalonia;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShadUI;
 using TestJob_Avalonia.Services.Auth;
 using TestJob_Avalonia.Services.Auth.API;
+using TestJob_Avalonia.Services.Factory;
 using TestJob_Avalonia.Services.Http;
 using TestJob_Avalonia.Services.Navigations;
 using TestJob_Avalonia.ViewModels;
+using TestJob_Avalonia.Views;
 
 namespace TestJob_Avalonia.Services.Extensions;
 
@@ -24,6 +28,9 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IAuthStateService, AuthStateService>();
+        services.AddSingleton<DialogManager>();
+        services.AddSingleton<ToastManager>();
+        services.AddSingleton(sp => new ThemeWatcher(Application.Current!));
 
         return services;
     }
@@ -33,8 +40,11 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddTransientServices(this IServiceCollection services)
     {
+        services.AddTransient(typeof(IViewModelFactory<>), typeof(ViewModelFactory<>));
+
         services.AddViewModel<UserInfoViewModel>(ServiceLifetime.Transient);
         services.AddViewModel<DevInfoViewModel>(ServiceLifetime.Transient);
+        services.AddViewModel<RegisterViewModel>(ServiceLifetime.Transient);
 
         services.AddTransient<IAuthApiService, AuthApiService>();
 
@@ -57,5 +67,14 @@ public static class ServiceCollectionExtensions
         var descriptor = new ServiceDescriptor(typeof(T), typeof(T), lifetime);
         services.Add(descriptor);
         ViewModelLifetimeRegistry.Register(typeof(T), lifetime);
+    }
+
+    public static IServiceProvider RegisterDialogs(this IServiceProvider serviceProvider)
+    {
+        var dialogManager = serviceProvider.GetRequiredService<DialogManager>();
+
+        dialogManager.Register<RegisterView, RegisterViewModel>();
+
+        return serviceProvider;
     }
 }

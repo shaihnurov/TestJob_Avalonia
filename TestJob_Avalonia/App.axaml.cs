@@ -12,6 +12,7 @@ using Serilog.Events;
 using TestJob_Avalonia.Services.Common;
 using TestJob_Avalonia.Services.Extensions;
 using TestJob_Avalonia.Services.Logging;
+using TestJob_Avalonia.Services.Navigations;
 using TestJob_Avalonia.ViewModels;
 using TestJob_Avalonia.Views;
 
@@ -103,6 +104,7 @@ public partial class App : Application
         _host.Services.GetRequiredService<ILoggerFactory>().AddSerilog();
         _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
+        _host.Services.RegisterDialogs();
         await _host.StartAsync();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -113,7 +115,7 @@ public partial class App : Application
             mainWindow.DataContext = mainWindowVm;
             mainWindow.Show();
 
-            await mainWindowVm.Initialize();
+            await mainWindowVm.InitializeAsync();
         }
 
         base.OnFrameworkInitializationCompleted();
