@@ -11,55 +11,59 @@
 
     <Panel>
         <controls:Card HorizontalAlignment="Center" VerticalAlignment="Center"
-                       IsVisible="{Binding !IsAuthenticated}">
+                       IsVisible="{Binding !IsAuthenticated, Mode=OneWay}">
             <TextBlock Classes="Muted" MaxWidth="320" TextWrapping="Wrap"
                        Text="Чтобы увидеть личную информацию, авторизуйтесь или зарегистрируйтесь в блоке справа" />
         </controls:Card>
 
         <controls:Card HorizontalAlignment="Center" VerticalAlignment="Center"
-                       IsVisible="{Binding IsAuthenticated}">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
-                <Grid.Styles>
-                    <Style Selector="Grid > TextBlock">
-                        <Setter Property="Margin" Value="0,7" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                    <Style Selector="Grid > TextBlock.Muted">
-                        <Setter Property="FontSize" Value="14" />
-                    </Style>
-                </Grid.Styles>
+                       IsVisible="{Binding IsAuthenticated, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal" Spacing="24">
+                <Border Width="166" Height="166" VerticalAlignment="Center" ClipToBounds="True"
+                        CornerRadius="{DynamicResource XlCornerRadius}"
+                        BorderBrush="{DynamicResource BorderColor30}" BorderThickness="1">
+                    <Panel>
+                        <TextBlock Classes="Muted" Text="Нет фото"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   IsVisible="{Binding User.Avatar, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                        <Image asyncImageLoader:ImageLoader.Source="{Binding User.Avatar}"
+                               Stretch="UniformToFill" />
+                    </Panel>
+                </Border>
 
-               <Border Grid.Row="1" Grid.RowSpan="4" Width="166" Height="166" Margin="0,0,16,0"
-                       VerticalAlignment="Center" ClipToBounds="True"
-                       CornerRadius="{DynamicResource XlCornerRadius}"
-                       BorderBrush="{DynamicResource BorderColor30}" BorderThickness="1">
-                   <Panel>
-                       <TextBlock Classes="Muted" Text="Нет фото" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                  IsVisible="{Binding User.Avatar, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
-                       <Image asyncImageLoader:ImageLoader.Source="{Binding User.Avatar}" Stretch="UniformToFill" />
-                   </Panel>
-               </Border>
+                <Grid ColumnDefinitions="Auto,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto"
+                      ColumnSpacing="8" VerticalAlignment="Center">
+                    <Grid.Styles>
+                        <Style Selector="Grid > TextBlock">
+                            <Setter Property="Margin" Value="0 7" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style Selector="Grid > TextBlock.Muted">
+                            <Setter Property="FontSize" Value="14" />
+                        </Style>
+                    </Grid.Styles>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="LucideIcon" Text="&#xe1f3;" />
-                <TextBlock Grid.Row="1" Grid.Column="2" Classes="Small" Text="Id" />
-                <TextBlock Grid.Row="1" Grid.Column="3" Classes="Muted"
-                           Text="{Binding User.Id, FallbackValue='Неизвестно'}" />
+                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="LucideIcon" Text="&#xe1f3;" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Classes="Small" Text="Id" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Classes="Muted"
+                               Text="{Binding User.Id, FallbackValue='Неизвестно'}" />
 
-                <TextBlock Grid.Row="2" Grid.Column="1" Classes="LucideIcon" Text="&#xe113;" />
-                <TextBlock Grid.Row="2" Grid.Column="2" Classes="Small" Text="Email" />
-                <TextBlock Grid.Row="2" Grid.Column="3" Classes="Muted"
-                           Text="{Binding User.Email, FallbackValue='Неизвестно'}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="LucideIcon" Text="&#xe113;" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Classes="Small" Text="Email" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Classes="Muted"
+                               Text="{Binding User.Email, FallbackValue='Неизвестно'}" />
 
-                <TextBlock Grid.Row="3" Grid.Column="1" Classes="LucideIcon" Text="&#xe46b;" />
-                <TextBlock Grid.Row="3" Grid.Column="2" Classes="Small" Text="Имя" />
-                <TextBlock Grid.Row="3" Grid.Column="3" Classes="Muted"
-                           Text="{Binding User.Name, FallbackValue='Неизвестно'}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="LucideIcon" Text="&#xe46b;" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Classes="Small" Text="Имя" />
+                    <TextBlock Grid.Row="2" Grid.Column="2" Classes="Muted"
+                               Text="{Binding User.Name, FallbackValue='Неизвестно'}" />
 
-                <TextBlock Grid.Row="4" Grid.Column="1" Classes="LucideIcon" Text="&#xe17a;" />
-                <TextBlock Grid.Row="4" Grid.Column="2" Classes="Small" Text="Роль" />
-                <TextBlock Grid.Row="4" Grid.Column="3" Classes="Muted"
-                           Text="{Binding User.Role, FallbackValue='Неизвестно'}" />
-            </Grid>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="LucideIcon" Text="&#xe17a;" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Classes="Small" Text="Роль" />
+                    <TextBlock Grid.Row="3" Grid.Column="2" Classes="Muted"
+                               Text="{Binding User.Role, FallbackValue='Неизвестно'}" />
+                </Grid>
+            </StackPanel>
         </controls:Card>
     </Panel>
 </UserControl>

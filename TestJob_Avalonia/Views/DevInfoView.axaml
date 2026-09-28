@@ -10,10 +10,10 @@
              x:DataType="vm:DevInfoViewModel">
 
     <UserControl.Styles>
-        <Style Selector="Grid > TextBlock">
+        <Style Selector="ItemsControl Grid > TextBlock">
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style Selector="Grid > TextBlock.Muted">
+        <Style Selector="ItemsControl Grid > TextBlock.Muted">
             <Setter Property="FontSize" Value="14" />
         </Style>
     </UserControl.Styles>
@@ -22,7 +22,7 @@
         <ItemsControl ItemsSource="{Binding Items}" Grid.IsSharedSizeScope="True">
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="models:DevInfoItem">
-                    <Grid Margin="0,7" ColumnSpacing="8">
+                    <Grid Margin="0 7" ColumnSpacing="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />

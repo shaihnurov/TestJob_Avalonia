@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI;
+using TestJob_Avalonia.Models;
 using TestJob_Avalonia.Services.Navigations;
 
 namespace TestJob_Avalonia.ViewModels;
@@ -17,6 +19,11 @@ public partial class MainWindowViewModel : ViewModelBase
     #endregion
 
     #region Properties
+    /// <summary>
+    /// Пункты навигационного меню, отображаемые над основной областью
+    /// </summary>
+    public IReadOnlyList<NavigationItem> NavigationItems { get; }
+
     /// <summary>
     /// ViewModel активного раздела, отображаемого в основной области
     /// </summary>
@@ -53,6 +60,12 @@ public partial class MainWindowViewModel : ViewModelBase
         DialogManager = dialogManager;
         ToastManager = toastManager;
         AuthViewModel = authViewModel;
+
+        NavigationItems =
+        [
+            new("\ue57d", "Личная информация", RedirectionUserInfoCommand),
+            new("\ue36e", "Информация о разработчике", RedirectionDevInfoCommand)
+        ];
 
         _navigationService.PageChanged += vm => CurrentPage = vm;
     }
