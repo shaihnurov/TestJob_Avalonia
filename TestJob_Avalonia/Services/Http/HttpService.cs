@@ -64,10 +64,20 @@ public sealed class HttpService(HttpClient httpClient, ILogger<HttpService> logg
         {
             return ApiResult<T>.Fail("Запрос отменён");
         }
+        catch (OperationCanceledException)
+        {
+            logger.LogError("Таймаут запроса к серверу");
+            return ApiResult<T>.Fail("Таймаут запроса к серверу");
+        }
         catch (HttpRequestException ex)
         {
             logger.LogError(ex, "Ошибка подключения к серверу");
             return ApiResult<T>.Fail("Ошибка подключения к серверу");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Неизвестная ошибка при выполнении запроса");
+            return ApiResult<T>.Fail("Неизвестная ошибка при выполнении запроса");
         }
     }
 
@@ -77,6 +87,10 @@ public sealed class HttpService(HttpClient httpClient, ILogger<HttpService> logg
     private async Task<ApiResult<T>> ProcessResponseAsync<T>(HttpResponseMessage response, CancellationToken ct)
     {
         var body = await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+
+#if DEBUG
+        logger.LogInformation("{Body}", System.Text.RegularExpressions.Regex.Unescape(body));
+#endif
 
         if (!response.IsSuccessStatusCode)
         {

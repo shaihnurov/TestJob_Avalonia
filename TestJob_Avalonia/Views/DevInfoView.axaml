@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="using:TestJob_Avalonia.ViewModels"
+             xmlns:models="using:TestJob_Avalonia.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TestJob_Avalonia.Views.DevInfoView"
+             x:DataType="vm:DevInfoViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Grid > TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Grid > TextBlock.Muted">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </UserControl.Styles>
+
+    <controls:Card HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ItemsControl ItemsSource="{Binding Items}" Grid.IsSharedSizeScope="True">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="models:DevInfoItem">
+                    <Grid Margin="0,7" ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Classes="LucideIcon" Text="{Binding Icon}" />
+                        <TextBlock Grid.Column="1" Classes="Small" Text="{Binding Label}" />
+                        <TextBlock Grid.Column="2" Classes="Muted" Text="{Binding Value}" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </controls:Card>
+</UserControl>

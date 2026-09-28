@@ -40,11 +40,6 @@ public interface IAuthStateService
     void SetSession(AuthResultDto authResult);
 
     /// <summary>
-    /// Обновляет данные текущего пользователя без изменения токенов (после GET /api/auth/me)
-    /// </summary>
-    void SetCurrentUser(UserDto user);
-
-    /// <summary>
     /// Сбрасывает состояние авторизации /logout
     /// </summary>
     void Clear();

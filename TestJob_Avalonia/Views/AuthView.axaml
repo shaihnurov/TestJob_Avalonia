@@ -49,11 +49,7 @@
         <controls:Card.Footer>
             <Button Classes="Primary" Content="Sign up" HorizontalAlignment="Center"
                     Command="{Binding, OpenRegisterCommand}" IsVisible="{Binding !IsAuthenticated}"
-                    controls:ButtonAssist.ShowProgress="{Binding IsBusy, Mode=OneWay}">
-                <controls:ButtonAssist.Icon>
-                    <TextBlock Classes="LucideIcon" Text="&#xe111;" />
-                </controls:ButtonAssist.Icon>
-            </Button>
+                    controls:ButtonAssist.ShowProgress="{Binding IsBusy, Mode=OneWay}"/>
         </controls:Card.Footer>
     </controls:Card>
 </UserControl>

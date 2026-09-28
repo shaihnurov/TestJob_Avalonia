@@ -33,13 +33,6 @@ public sealed class AuthStateService : IAuthStateService
     }
 
     /// <inheritdoc />
-    public void SetCurrentUser(UserDto user)
-    {
-        CurrentUser = user;
-        StateChanged?.Invoke();
-    }
-
-    /// <inheritdoc />
     public void Clear()
     {
         AccessToken = null;

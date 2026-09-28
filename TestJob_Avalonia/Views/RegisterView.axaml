@@ -19,8 +19,7 @@
 
         <TextBox Classes="Clearable" Text="{Binding Name, Mode=TwoWay}"
             PlaceholderText="Jonh"
-            controls:ControlAssist.Label="Ваше имя"
-            controls:ElementAssist.FocusOnLoad="True" />
+            controls:ControlAssist.Label="Ваше имя"/>
 
         <TextBox Classes="PasswordReveal" PasswordChar="•" 
             Text="{Binding Password, Mode=TwoWay}"

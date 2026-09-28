@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="using:TestJob_Avalonia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TestJob_Avalonia.Views.UserInfoView"
+             x:DataType="vm:UserInfoViewModel">
+
+    <Panel>
+        <controls:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                       IsVisible="{Binding !IsAuthenticated}">
+            <TextBlock Classes="Muted" MaxWidth="320" TextWrapping="Wrap"
+                       Text="Чтобы увидеть личную информацию, авторизуйтесь или зарегистрируйтесь в блоке справа" />
+        </controls:Card>
+
+        <controls:Card HorizontalAlignment="Center" VerticalAlignment="Center"
+                       IsVisible="{Binding IsAuthenticated}">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                <Grid.Styles>
+                    <Style Selector="Grid > TextBlock">
+                        <Setter Property="Margin" Value="0,7" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style Selector="Grid > TextBlock.Muted">
+                        <Setter Property="FontSize" Value="14" />
+                    </Style>
+                </Grid.Styles>
+
+                <controls:Avatar Grid.Row="1" Grid.RowSpan="4" Width="166" Height="166"
+                                 Margin="0,0,16,0" VerticalAlignment="Center" Fallback="Нет фото"
+                                 Source="{Binding User.Avatar}"
+                                 CornerRadius="{DynamicResource XlCornerRadius}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Classes="LucideIcon" Text="&#xe1f3;" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Classes="Small" Text="Id" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Classes="Muted"
+                           Text="{Binding User.Id, FallbackValue='Неизвестно'}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="1" Classes="LucideIcon" Text="&#xe113;" />
+                <TextBlock Grid.Row="2" Grid.Column="2" Classes="Small" Text="Email" />
+                <TextBlock Grid.Row="2" Grid.Column="3" Classes="Muted"
+                           Text="{Binding User.Email, FallbackValue='Неизвестно'}" />
+
+                <TextBlock Grid.Row="3" Grid.Column="1" Classes="LucideIcon" Text="&#xe46b;" />
+                <TextBlock Grid.Row="3" Grid.Column="2" Classes="Small" Text="Имя" />
+                <TextBlock Grid.Row="3" Grid.Column="3" Classes="Muted"
+                           Text="{Binding User.Name, FallbackValue='Неизвестно'}" />
+
+                <TextBlock Grid.Row="4" Grid.Column="1" Classes="LucideIcon" Text="&#xe17a;" />
+                <TextBlock Grid.Row="4" Grid.Column="2" Classes="Small" Text="Роль" />
+                <TextBlock Grid.Row="4" Grid.Column="3" Classes="Muted"
+                           Text="{Binding User.Role, FallbackValue='Неизвестно'}" />
+            </Grid>
+        </controls:Card>
+    </Panel>
+</UserControl>

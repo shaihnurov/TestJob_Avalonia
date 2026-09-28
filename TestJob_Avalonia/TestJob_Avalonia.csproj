@@ -38,5 +38,17 @@
     <Compile Update="Views\RegisterView.axaml.cs">
       <DependentUpon>RegisterView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\DevInfoView.axaml.cs">
+      <DependentUpon>DevInfoView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
