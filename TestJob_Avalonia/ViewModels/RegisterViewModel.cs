@@ -13,8 +13,7 @@ namespace TestJob_Avalonia.ViewModels;
 /// <summary>
 /// ViewModel диалога регистрации
 /// </summary>
-public partial class RegisterViewModel(DialogManager dialogManager, ToastManager toastManager,
-    IAuthApiService authApiService, IAuthStateService authStateService) : ViewModelBase
+public partial class RegisterViewModel(DialogManager dialogManager, ToastManager toastManager, IAuthApiService authApiService, IAuthStateService authStateService) : ViewModelBase
 {
     #region Свойства
     /// <summary>

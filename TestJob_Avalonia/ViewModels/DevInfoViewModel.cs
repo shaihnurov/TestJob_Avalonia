@@ -3,8 +3,14 @@ using TestJob_Avalonia.Models;
 
 namespace TestJob_Avalonia.ViewModels;
 
+/// <summary>
+/// ViewModel раздела Информация о разработчике (View_2)
+/// </summary>
 public partial class DevInfoViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Коллекция, которая содержит информацию о разработчике приложения по ТЗ
+    /// </summary>
     public IReadOnlyList<DevInfoItem> Items { get; } =
     [
         new("\ue46b", "ФИО", "Шайхнуров Ильнар Айратович"),

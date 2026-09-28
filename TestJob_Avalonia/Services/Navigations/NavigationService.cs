@@ -30,7 +30,7 @@ public sealed class NavigationService(IServiceProvider serviceProvider) : INavig
     public Task NavigateTo(ViewModelBase viewModel) => NavigateCore(() => viewModel);
 
     /// <inheritdoc/>
-    public ViewModelBase GetViewModel(Type viewModelType) => ViewModelLifetimeRegistry.IsTransient(viewModelType) 
+    public ViewModelBase GetViewModel(Type viewModelType) => ViewModelLifetimeRegistry.IsTransient(viewModelType)
         ? (ViewModelBase)ActivatorUtilities.CreateInstance(serviceProvider, viewModelType) : (ViewModelBase)serviceProvider.GetRequiredService(viewModelType);
 
     /// <summary>

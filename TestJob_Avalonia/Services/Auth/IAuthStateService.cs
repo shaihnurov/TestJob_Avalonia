@@ -9,7 +9,7 @@ namespace TestJob_Avalonia.Services.Auth;
 public interface IAuthStateService
 {
     /// <summary>
-    /// Текущий access токен для авторизации запросов, либо null, если пользователь не авторизован
+    /// Текущий access токен для авторизации запросов
     /// </summary>
     string? AccessToken { get; }
 
@@ -19,7 +19,7 @@ public interface IAuthStateService
     string? RefreshToken { get; }
 
     /// <summary>
-    /// Данные текущего авторизованного пользователя, либо null
+    /// Данные текущего авторизованного пользователя
     /// </summary>
     UserDto? CurrentUser { get; }
 

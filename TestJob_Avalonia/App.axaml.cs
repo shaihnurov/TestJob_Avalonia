@@ -11,20 +11,17 @@ using Serilog;
 using Serilog.Events;
 using TestJob_Avalonia.Services.Common;
 using TestJob_Avalonia.Services.Extensions;
-using TestJob_Avalonia.Services.Logging;
-using TestJob_Avalonia.Services.Navigations;
 using TestJob_Avalonia.ViewModels;
 using TestJob_Avalonia.Views;
+#if DEBUG
+using TestJob_Avalonia.Services.Logging;
+#endif
 
 namespace TestJob_Avalonia;
 
 public partial class App : Application
 {
     private IHost? _host;
-    private ILogger<App>? _logger;
-#if RELEASE
-        private static Mutex? _appMutex;
-#endif
 
     public override void Initialize()
     {
@@ -36,15 +33,6 @@ public partial class App : Application
 
     public override async void OnFrameworkInitializationCompleted()
     {
-#if RELEASE
-            _appMutex = new Mutex(true, "TestJob_AvaloniaSingleInstanceMutex", out var createdNew);
-            if (!createdNew)
-            {
-/*                var instanceDialog = new InstanceDialog();
-                instanceDialog.Show();
-                return;*/
-            }
-#endif
         EnsureFoldersExist();
 
         _host = Host.CreateDefaultBuilder()
@@ -102,9 +90,8 @@ public partial class App : Application
 #endif
 
         _host.Services.GetRequiredService<ILoggerFactory>().AddSerilog();
-        _logger = _host.Services.GetRequiredService<ILogger<App>>();
-
         _host.Services.RegisterDialogs();
+
         await _host.StartAsync();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

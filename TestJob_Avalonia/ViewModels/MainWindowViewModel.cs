@@ -1,7 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI;
-using System.Threading.Tasks;
 using TestJob_Avalonia.Services.Navigations;
 
 namespace TestJob_Avalonia.ViewModels;

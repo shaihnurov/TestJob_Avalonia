@@ -7,5 +7,5 @@
 /// <param name="Email">Email пользователя</param>
 /// <param name="Name">Отображаемое имя</param>
 /// <param name="Role">Роль пользователя</param>
-/// <param name="Avatar">Путь к фотографии/param>
+/// <param name="Avatar">URL аватарки/param>
 public sealed record UserDto(string Id, string Email, string Name, string Role, string? Avatar = null);

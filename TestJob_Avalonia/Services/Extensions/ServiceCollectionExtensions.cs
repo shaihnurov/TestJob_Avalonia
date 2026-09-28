@@ -14,12 +14,12 @@ using TestJob_Avalonia.Views;
 namespace TestJob_Avalonia.Services.Extensions;
 
 /// <summary>
-/// Методы-расширения для регистрации сервисов в контейнере зависимостей
+/// Методы расширения для регистрации сервисов в контейнере зависимостей
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Регистрация сервисов с жизненным циклом Singleton.
+    /// Регистрация сервисов с жизненным циклом Singleton
     /// </summary>
     public static IServiceCollection AddSingletonServices(this IServiceCollection services)
     {
@@ -36,7 +36,7 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Регистрация сервисов с жизненным циклом Transient.
+    /// Регистрация сервисов с жизненным циклом Transient
     /// </summary>
     public static IServiceCollection AddTransientServices(this IServiceCollection services)
     {
@@ -52,7 +52,7 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Регистрация общих библиотечных сервисов.
+    /// Регистрация общих сервисов
     /// </summary>
     public static IServiceCollection AddCommonServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -62,6 +62,12 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Регистрация ViewModel в контейнере зависимостей с заданным жизненным циклом.
+    /// Дополнительно сохраняет жизненный цикл в <see cref="ViewModelLifetimeRegistry"/>,
+    /// чтобы фабрика ViewModel знала, как ею управлять
+    /// </summary>
+    /// <typeparam name="T">Тип регистрируемой ViewModel</typeparam>
     private static void AddViewModel<T>(this IServiceCollection services, ServiceLifetime lifetime) where T : class
     {
         var descriptor = new ServiceDescriptor(typeof(T), typeof(T), lifetime);
@@ -69,6 +75,9 @@ public static class ServiceCollectionExtensions
         ViewModelLifetimeRegistry.Register(typeof(T), lifetime);
     }
 
+    /// <summary>
+    /// Регистрация диалоговых окон в <see cref="DialogManager"/> связывает каждое представление с его ViewModel
+    /// </summary>
     public static IServiceProvider RegisterDialogs(this IServiceProvider serviceProvider)
     {
         var dialogManager = serviceProvider.GetRequiredService<DialogManager>();

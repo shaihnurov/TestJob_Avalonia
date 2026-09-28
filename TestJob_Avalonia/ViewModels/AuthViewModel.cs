@@ -66,6 +66,7 @@ public partial class AuthViewModel : ViewModelBase
         _dialogManager = dialogManager;
         _registerViewModelFactory = registerViewModelFactory;
 
+        // Отписываться нет смысла, так как AuthViewModel - Singleton
         _authStateService.StateChanged += () => OnPropertyChanged(nameof(IsAuthenticated));
     }
 
