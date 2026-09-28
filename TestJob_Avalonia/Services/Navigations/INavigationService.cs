@@ -32,9 +32,10 @@ public interface INavigationService
     Task NavigateTo(ViewModelBase viewModel);
 
     /// <summary>
-    /// Позволяет получить страницу через DI
+    /// Возвращает ViewModel с учётом времени жизни. Transient создаётся через <see cref="ActivatorUtilities"/>
+    /// зависимости берутся из контейнера, но сам экземпляр контейнер не запоминает и не удерживает после освобождения.
+    /// Singleton берётся из контейнера
     /// </summary>
-    /// <param name="viewModelType">Страница</param>
-    /// <returns>Страница готовая к отображению</returns>
+    /// <param name="viewModelType">Тип ViewModel</param>
     ViewModelBase GetViewModel(Type viewModelType);
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TestJob_Avalonia.Services.Extensions;
@@ -7,58 +8,71 @@ using TestJob_Avalonia.ViewModels;
 namespace TestJob_Avalonia.Services.Navigations;
 
 /// <summary>
-/// Сервис навигации между страницами приложения
+/// Сервис навигации между разделами приложения.
+/// Transient VM создаются в обход отслеживания контейнером и освобождаются после ухода со страницы,
+/// singleton берутся из контейнера и сохраняют состояние
 /// </summary>
-public partial class NavigationService(IServiceProvider serviceProvider) : INavigationService
+public sealed class NavigationService(IServiceProvider serviceProvider) : INavigationService
 {
+    private readonly SemaphoreSlim _navigationLock = new(1, 1);
+    private ViewModelBase? _currentViewModel;
+
     /// <inheritdoc/>
     public event Action<ViewModelBase>? PageChanged;
 
+    /// <inheritdoc/>
+    public Task RequestNavigation<T>() where T : ViewModelBase => NavigateTo(typeof(T));
+
+    /// <inheritdoc/>
+    public Task NavigateTo(Type viewModelType) => NavigateCore(() => GetViewModel(viewModelType));
+
+    /// <inheritdoc/>
+    public Task NavigateTo(ViewModelBase viewModel) => NavigateCore(() => viewModel);
+
+    /// <inheritdoc/>
+    public ViewModelBase GetViewModel(Type viewModelType) => ViewModelLifetimeRegistry.IsTransient(viewModelType) 
+        ? (ViewModelBase)ActivatorUtilities.CreateInstance(serviceProvider, viewModelType) : (ViewModelBase)serviceProvider.GetRequiredService(viewModelType);
+
     /// <summary>
-    /// Содержит актуальную VM
+    /// Общая логика перехода, создание и инициализация новой ViewModel, переключение экрана, освобождение предыдущей
     /// </summary>
-    private ViewModelBase? _currentViewModel;
-
-    #region Методы навигации
-    /// <inheritdoc/>
-    public async Task RequestNavigation<T>() where T : ViewModelBase => await NavigateTo(typeof(T));
-
-    /// <inheritdoc/>
-    public ViewModelBase GetViewModel(Type viewModelType) => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType);
-
-    /// <inheritdoc/>
-    public async Task NavigateTo(Type viewModelType)
+    /// <param name="resolve">Фабрика новой ViewModel вызывается внутри блокировки</param>
+    private async Task NavigateCore(Func<ViewModelBase> resolve)
     {
-        if (_currentViewModel != null)
+        await _navigationLock.WaitAsync();
+        try
         {
-            if (ViewModelLifetimeRegistry.IsTransient(_currentViewModel.GetType()))
-                if (_currentViewModel is IDisposable disposable)
-                    disposable.Dispose();
+            var previous = _currentViewModel;
+            var next = resolve();
+
+            try
+            {
+                await next.InitializeAsync();
+            }
+            catch
+            {
+                DisposeIfTransient(next);
+                throw;
+            }
+
+            _currentViewModel = next;
+            PageChanged?.Invoke(next);
+
+            if (!ReferenceEquals(previous, next))
+                DisposeIfTransient(previous);
         }
-
-        var vm = GetViewModel(viewModelType);
-        await vm.Initialize();
-
-        _currentViewModel = vm;
-        PageChanged?.Invoke(vm);
+        finally
+        {
+            _navigationLock.Release();
+        }
     }
 
-    /// <inheritdoc/>
-    public async Task NavigateTo(ViewModelBase viewModel)
+    /// <summary>
+    /// Освобождает ViewModel, если она Transient. Singleton не трогаем: они переиспользуются.
+    /// </summary>
+    private static void DisposeIfTransient(ViewModelBase? viewModel)
     {
-        Type viewModelType = viewModel.GetType();
-
-        if (_currentViewModel != null)
-        {
-            if (ViewModelLifetimeRegistry.IsTransient(_currentViewModel.GetType()))
-                if (_currentViewModel is IDisposable disposable)
-                    disposable.Dispose();
-        }
-
-        await viewModel.Initialize();
-
-        _currentViewModel = viewModel;
-        PageChanged?.Invoke(viewModel);
+        if (viewModel is not null && ViewModelLifetimeRegistry.IsTransient(viewModel.GetType()))
+            viewModel.Dispose();
     }
-    #endregion
 }
