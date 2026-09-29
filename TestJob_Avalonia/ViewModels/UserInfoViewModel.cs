@@ -49,7 +49,7 @@ public sealed partial class UserInfoViewModel : ViewModelBase
     /// <summary>
     /// Загружает актуальные данные пользователя при открытии страницы
     /// </summary>
-    public override async Task InitializeAsync() => await LoadUserAsync();
+    public override Task InitializeAsync() => LoadUserAsync();
 
     #region Methods
     /// <summary>

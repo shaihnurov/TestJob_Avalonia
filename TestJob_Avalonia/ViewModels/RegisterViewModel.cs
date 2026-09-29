@@ -56,7 +56,7 @@ public partial class RegisterViewModel(DialogManager dialogManager, ToastManager
     /// <summary>
     /// Регистрирует пользователя, затем выполняет автоматический вход и закрывает диалог
     /// </summary>
-    [RelayCommand(CanExecute = nameof(CanSubmit))]
+    [RelayCommand(CanExecute = nameof(CanSubmit), AllowConcurrentExecutions = false)]
     private async Task Submit()
     {
         IsBusy = true;

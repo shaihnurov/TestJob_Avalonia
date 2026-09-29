@@ -74,7 +74,7 @@ public partial class AuthViewModel : ViewModelBase
     /// <summary>
     /// Выполняет вход
     /// </summary>
-    [RelayCommand(CanExecute = nameof(CanSubmit))]
+    [RelayCommand(CanExecute = nameof(CanSubmit), AllowConcurrentExecutions = false)]
     private async Task Auth()
     {
         IsBusy = true;
