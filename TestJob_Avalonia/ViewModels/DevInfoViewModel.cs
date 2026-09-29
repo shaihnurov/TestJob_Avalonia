@@ -6,7 +6,7 @@ namespace TestJob_Avalonia.ViewModels;
 /// <summary>
 /// ViewModel раздела Информация о разработчике (View_2)
 /// </summary>
-public partial class DevInfoViewModel : ViewModelBase
+public sealed class DevInfoViewModel : ViewModelBase
 {
     /// <summary>
     /// Коллекция, которая содержит информацию о разработчике приложения по ТЗ
